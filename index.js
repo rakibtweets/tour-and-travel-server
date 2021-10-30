@@ -38,7 +38,6 @@ async function run() {
 
     app.get('/destinations/:id', async (req, res) => {
       const id = req.params.id;
-      // console.log('~ id', id);
       const query = { _id: ObjectId(id) };
       const result = await travelPlaceCollection.findOne(query);
       res.send(result);
@@ -47,10 +46,15 @@ async function run() {
     // POST API
     app.post('/destinations', async (req, res) => {
       const tourPlaceInfo = req.body;
-      //   console.log('hitting the post', tourPlaceInfo);
       const result = await travelPlaceCollection.insertOne(tourPlaceInfo);
-      //   console.log(result);
       res.json(result);
+    });
+
+    //manageAll Booking api
+    app.get('/managleAllBooking', async (req, res) => {
+      const cusor = myTourBookingCollection.find({});
+      const result = await cusor.toArray();
+      res.send(result);
     });
 
     //GET from my booking Collection
