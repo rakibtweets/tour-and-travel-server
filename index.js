@@ -70,15 +70,13 @@ async function run() {
       res.json(result);
     });
 
-    // // DELETE MyBOOkin api
-    // app.delete('/deleteMyBooking/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   console.log('~ id', id);
-    //   const query = { _id: ObjectId(id) };
-    //   const result = await myTourBookingCollection.deleteOne(query);
-    //   console.log('~ result', result);
-    //   res.send(result);
-    // });
+    // DELETE MyBooking api
+    app.delete('/deleteMyBooking/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await myTourBookingCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
