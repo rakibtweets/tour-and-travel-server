@@ -57,6 +57,33 @@ async function run() {
       res.send(result);
     });
 
+    //manage singleBooking api
+    app.get('/managleAllBooking/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await myTourBookingCollection.findOne(query);
+      res.send(result);
+    });
+
+    // UPDATE mange Booking api
+    app.put('/managleAllBooking/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const updateBooking = req.body;
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          status: updateBooking.status,
+        },
+      };
+      const result = await myTourBookingCollection.updateOne(
+        query,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
+
     //GET from my booking Collection
     app.get('/myBookingList/:email', async (req, res) => {
       const email = req.params.email;
