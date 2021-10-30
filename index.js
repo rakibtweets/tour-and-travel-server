@@ -24,6 +24,7 @@ async function run() {
     await client.connect();
     const database = client.db('travelDestination');
     const travelPlaceCollection = database.collection('tourPlaceName');
+    const myTourBookingCollection = database.collection('myBookingList');
 
     // GET API
 
@@ -33,14 +34,51 @@ async function run() {
       res.send(result);
     });
 
+    // get single Travel Destination
+
+    app.get('/destinations/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log('~ id', id);
+      const query = { _id: ObjectId(id) };
+      const result = await travelPlaceCollection.findOne(query);
+      res.send(result);
+    });
+
     // POST API
     app.post('/destinations', async (req, res) => {
       const tourPlaceInfo = req.body;
       //   console.log('hitting the post', tourPlaceInfo);
       const result = await travelPlaceCollection.insertOne(tourPlaceInfo);
-      console.log(result);
+      //   console.log(result);
       res.json(result);
     });
+
+    //GET from my booking Collection
+    app.get('/myBookingList/:email', async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const cusor = myTourBookingCollection.find(query);
+      const result = await cusor.toArray();
+      res.send(result);
+    });
+
+    //POST To Mybooking collection
+    app.post('/myBookingList/:email', async (req, res) => {
+      const email = req.params.email;
+      const myBookingInfo = req.body;
+      const result = await myTourBookingCollection.insertOne(myBookingInfo);
+      res.json(result);
+    });
+
+    // // DELETE MyBOOkin api
+    // app.delete('/deleteMyBooking/:id', async (req, res) => {
+    //   const id = req.params.id;
+    //   console.log('~ id', id);
+    //   const query = { _id: ObjectId(id) };
+    //   const result = await myTourBookingCollection.deleteOne(query);
+    //   console.log('~ result', result);
+    //   res.send(result);
+    // });
   } finally {
     // await client.close();
   }
