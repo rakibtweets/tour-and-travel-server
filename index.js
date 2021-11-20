@@ -27,7 +27,7 @@ async function run() {
     const travelPlaceCollection = database.collection('tourPlaceName');
     const myTourBookingCollection = database.collection('myBookingList');
 
-    // GET API
+    // GET API for destination
 
     app.get('/destinations', async (req, res) => {
       const cusor = travelPlaceCollection.find({});
@@ -44,14 +44,14 @@ async function run() {
       res.send(result);
     });
 
-    // POST API
+    // POST API travel destiation
     app.post('/destinations', async (req, res) => {
       const tourPlaceInfo = req.body;
       const result = await travelPlaceCollection.insertOne(tourPlaceInfo);
       res.json(result);
     });
 
-    //manageAll Booking api
+    //manageAll Booking api 
     app.get('/managleAllBooking', async (req, res) => {
       const cusor = myTourBookingCollection.find({});
       const result = await cusor.toArray();
